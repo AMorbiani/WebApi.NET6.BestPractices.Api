@@ -1,3 +1,4 @@
+using BestPractices.Api.Pipelines;
 using BestPractices.API.Authentication.Extensions;
 using BestPractices.API.Controllers.Common;
 using BestPractices.API.Extensions;
@@ -85,7 +86,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Inject MediatR (NOT USING AUTOFAC)
-builder.Services.AddMediatR(typeof(Program));
+builder.Services.AddMediatR(typeof(Program))
+    // Pipeline Behaviours
+    .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 // Inject clean class for loading Assembly
 builder.Services.AddMediatR(typeof(CoreModule).GetTypeInfo().Assembly);
 // Load FakeData Custom Extension
